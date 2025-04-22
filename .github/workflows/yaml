@@ -1,0 +1,32 @@
+name: Build and Deploy to Azure Static Web Apps
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy to Azure Static Web Apps
+        uses: azure/static-web-apps-deploy@v1
+        with:
+          app_location: "/"
+          api_location: "/api" # If you have an API
+          output_location: "/build" # Specify the output directory of your build process
+          app_artifact_location: "build" # Artifact directory
